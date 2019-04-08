@@ -978,7 +978,7 @@ public class RCTMGLMapView extends MapView implements
                 event.setPayload(payload);
 
                 mManager.handleEvent(event);
-        } catch (exception: InvalidLatLngBoundsException) {
+        } catch (Exception InvalidLatLngBoundsException) {
             // ignore invalid latlng exceptions, was seen happening during component unmounts
         }
     }
