@@ -1473,19 +1473,20 @@ public class RCTMGLMapView extends MapView implements
         if (!canHandleEvent(eventType)) return;
 
         IEvent event;
+        try {
+                switch (eventType) {
+                    // payload events
+                    case EventTypes.REGION_WILL_CHANGE:
+                    case EventTypes.REGION_DID_CHANGE:
+                    case EventTypes.REGION_IS_CHANGING:
+                        event = new MapChangeEvent(this, makeRegionPayload(), eventType);
+                        break;
+                    default:
+                        event = new MapChangeEvent(this, eventType);
+                }
 
-        switch (eventType) {
-            // payload events
-            case EventTypes.REGION_WILL_CHANGE:
-            case EventTypes.REGION_DID_CHANGE:
-            case EventTypes.REGION_IS_CHANGING:
-                event = new MapChangeEvent(this, makeRegionPayload(), eventType);
-                break;
-            default:
-                event = new MapChangeEvent(this, eventType);
-        }
-
-        mManager.handleEvent(event);
+                mManager.handleEvent(event);
+          } catch (InvalidLatLngBoundsException e) {}
     }
 
     private boolean canHandleEvent(String event) {
